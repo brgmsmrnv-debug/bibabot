@@ -195,53 +195,53 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
         application
     )
     
-try:
-    requests.post(
-        GOOGLE_SCRIPT_URL,
-        json={
-            "fio": data["fio"],
-            "phone": data["phone"],
-            "email": data["email"],
-            "comment": data["comment"],
-            "telegram": username,
-            "user_id": message.from_user.id
-        },
-        timeout=10
-    )
+    try:
+        requests.post(
+            GOOGLE_SCRIPT_URL,
+            json={
+                "fio": data["fio"],
+                "phone": data["phone"],
+                "email": data["email"],
+                "comment": data["comment"],
+                "telegram": username,
+                "user_id": message.from_user.id
+            },
+            timeout=10
+        )
     
-except Exception as e:
-    print(f"Google Sheets error: {e}")
+    except Exception as e:
+        print(f"Google Sheets error: {e}")
     
-stats = load_stats()
+    stats = load_stats()
 
-stats["applications"] += 1
+    stats["applications"] += 1
 
-user_id = message.from_user.id
+    user_id = message.from_user.id
 
-if user_id not in stats["applicants"]:
-    stats["applicants"].append(user_id)
+    if user_id not in stats["applicants"]:
+        stats["applicants"].append(user_id)
         
-stats["last_applications"].append({
-    "fio": data["fio"],
-    "phone": data["phone"]
-})
+    stats["last_applications"].append({
+        "fio": data["fio"],
+        "phone": data["phone"]
+    })
 
-if len(stats["last_applications"]) > 5:
-    stats["last_applications"] = stats["last_applications"][-5:]
+    if len(stats["last_applications"]) > 5:
+        stats["last_applications"] = stats["last_applications"][-5:]
 
-save_stats(stats)
+    save_stats(stats)
     
-await message.answer(
-    "✅ Спасибо! Ваша заявка успешно отправлена.",
-    reply_markup=None
-)
+    await message.answer(
+        "✅ Спасибо! Ваша заявка успешно отправлена.",
+        reply_markup=None
+    )
 
-await state.clear()
+    await state.clear()
 
 
-app = Flask(__name__)
+    app = Flask(__name__)
 
-@app.route("/")
+    @app.route("/")
 def home():
     return "Bot is running"
 
