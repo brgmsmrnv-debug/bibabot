@@ -1,5 +1,7 @@
 import asyncio
 import os
+from flask import Flask
+import threading
 from aiogram import Bot, Dispatcher, F
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
@@ -140,6 +142,16 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
 
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
 async def main():
     bot = Bot(TOKEN)
 
@@ -147,4 +159,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    threading.Thread(target=run_web).start()
     asyncio.run(main())
