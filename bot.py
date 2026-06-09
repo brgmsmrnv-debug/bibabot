@@ -70,7 +70,9 @@ async def start(message: Message, state: FSMContext):
     await state.clear()
 
     await message.answer(
-        "Здравствуйте! Пожалуйста, заполните заявку.\n\n"
+        "👋 Добро пожаловать!\n\n"
+        "Оставьте заявку, и мы свяжемся с вами в ближайшее время.\n\n"
+        "📍 Шаг 1 из 4\n\n"
         "Введите ваше Ф.И.О."
     )
 
