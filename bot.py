@@ -181,9 +181,24 @@ async def get_phone(message: Message, state: FSMContext):
 
 @dp.message(Form.email)
 async def get_email(message: Message, state: FSMContext):
-    await state.update_data(email=message.text)
 
-    await message.answer("Оставьте комментарий:")
+    email = message.text.strip()
+
+    if "@" not in email or "." not in email:
+        await message.answer(
+            "❌ Некорректный e-mail.\n\n"
+            "Пример:\n"
+            "example@mail.ru"
+        )
+        return
+
+    await state.update_data(email=email)
+
+    await message.answer(
+        "💬 Шаг 4 из 4\n\n"
+        "Оставьте комментарий:"
+    )
+
     await state.set_state(Form.comment)
 
 
