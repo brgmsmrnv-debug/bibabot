@@ -71,7 +71,27 @@ async def start(message: Message, state: FSMContext):
     )
 
     await state.set_state(Form.fio)
+    
+@dp.message(F.text == "/stats")
+async def stats_command(message: Message):
+    if message.from_user.id != ADMIN_ID:
+        return
 
+    stats = load_stats()
+
+    users = len(stats["users"])
+    applications = stats["applications"]
+
+    if users > 0:
+        conversion = round(applications / users * 100, 1)
+    else:
+        conversion = 0
+
+    await message.answer(
+        f"📊 Посетителей: {users}\n"
+        f"📝 Заявок: {applications}\n"
+        f"📈 Конверсия: {conversion}%"
+    )
 
 @dp.message(Form.fio)
 async def get_fio(message: Message, state: FSMContext):
