@@ -72,9 +72,9 @@ async def start(message: Message, state: FSMContext):
 
     await message.answer(
         "👋 Добро пожаловать!\n\n"
-        "Оставьте заявку, и мы свяжемся с вами в ближайшее время.\n\n"
-        "📍 Шаг 1 из 4\n\n"
-        "Введите ваше Ф.И.О."
+        "Оставьте заявку и мы свяжемся с вами в ближайшее время.",
+        reply_markup=start_keyboard
+
     )
 
     await state.set_state(Form.fio)
