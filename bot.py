@@ -1,4 +1,5 @@
 import asyncio
+import os
 from aiogram import Bot, Dispatcher, F
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
@@ -11,7 +12,7 @@ from aiogram.types import (
     KeyboardButton,
 )
 
-TOKEN = 8979751097:AAGbY5j4nOnjV7bNW7RraYwuts_kW87M-ho
+TOKEN = os.getenv("8979751097:AAGbY5j4nOnjV7bNW7RraYwuts_kW87M-ho")
 ADMIN_ID = 6287069134
 
 
