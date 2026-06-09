@@ -188,6 +188,10 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
         application
     )
 
+    stats = load_stats()
+    stats["applications"] += 1
+    save_stats(stats)
+    
     await message.answer(
         "✅ Спасибо! Ваша заявка успешно отправлена.",
         reply_markup=None
