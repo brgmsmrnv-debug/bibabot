@@ -14,6 +14,7 @@ from aiogram.types import (
     Message,
     ReplyKeyboardMarkup,
     KeyboardButton,
+    ReplyKeyboardRemove,
 )
 
 TOKEN = os.getenv("BOT_TOKEN")
@@ -88,7 +89,7 @@ async def start_application(message: Message, state: FSMContext):
     await message.answer(
         "📍 Шаг 1 из 4\n\n"
         "Введите ваше Ф.И.О.",
-        reply_markup=None
+        reply_markup=ReplyKeyboardRemove()
     )
 
     await state.set_state(Form.fio)
