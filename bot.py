@@ -81,17 +81,20 @@ async def stats_command(message: Message):
 
     users = len(stats["users"])
     applications = stats["applications"]
+    applicants = len(stats["applicants"])
 
     if users > 0:
-        conversion = round(applications / users * 100, 1)
+        conversion = round(applicants / users * 100, 1)
     else:
-        conversion = 0
+    conversion = 0
 
     await message.answer(
-        f"📊 Посетителей: {users}\n"
-        f"📝 Заявок: {applications}\n"
-        f"📈 Конверсия: {conversion}%"
-    )
+    f"📊 Статистика\n\n"
+    f"👥 Посетителей: {users}\n"
+    f"📝 Всего заявок: {applications}\n"
+    f"🙋 Уникальных заявителей: {applicants}\n"
+    f"📈 Конверсия: {conversion}%"
+)
 
 @dp.message(Form.fio)
 async def get_fio(message: Message, state: FSMContext):
