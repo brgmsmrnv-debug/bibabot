@@ -1,5 +1,6 @@
 import asyncio
 import os
+import requests
 import json
 from flask import Flask
 import threading
@@ -16,6 +17,7 @@ from aiogram.types import (
 )
 
 TOKEN = os.getenv("BOT_TOKEN")
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS601snzMGKuXdvvJLE4tCVMfUjtTsuORk3T36kBi_ZySCG2E09P4qtFff8R4957x4/exec"
 ADMIN_ID = 6287069134
 def load_stats():
     try:
@@ -192,12 +194,28 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
         ADMIN_ID,
         application
     )
+    
+try:
+    requests.post(
+        GOOGLE_SCRIPT_URL,
+        json={
+            "fio": data["fio"],
+            "phone": data["phone"],
+            "email": data["email"],
+            "comment": data["comment"],
+            "telegram": username,
+            "user_id": message.from_user.id
+        },
+        timeout=10
+    )
+    
+except Exception as e:
+    print(f"Google Sheets error: {e}")
+stats = load_stats()
 
-    stats = load_stats()
+stats["applications"] += 1
 
-    stats["applications"] += 1
-
-    user_id = message.from_user.id
+user_id = message.from_user.id
 
     if user_id not in stats["applicants"]:
         stats["applicants"].append(user_id)
