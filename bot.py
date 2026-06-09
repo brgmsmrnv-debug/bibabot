@@ -201,6 +201,14 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
 
     if user_id not in stats["applicants"]:
         stats["applicants"].append(user_id)
+        
+    stats["last_applications"].append({
+        "fio": data["fio"],
+        "phone": data["phone"]
+    })
+
+    if len(stats["last_applications"]) > 5:
+        stats["last_applications"] = stats["last_applications"][-5:]
 
     save_stats(stats)
     
