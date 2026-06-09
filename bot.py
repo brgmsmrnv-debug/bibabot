@@ -49,6 +49,7 @@ dp = Dispatcher(storage=MemoryStorage())
 
 confirm_keyboard = ReplyKeyboardMarkup(
     keyboard=[
+        [KeyboardButton(text="📝 Оставить заявку")]
         [KeyboardButton(text="✅ Подтвердить")],
         [KeyboardButton(text="❌ Заполнить заново")]
     ],
