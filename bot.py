@@ -132,12 +132,25 @@ async def stats_command(message: Message):
 
 @dp.message(Form.fio)
 async def get_fio(message: Message, state: FSMContext):
-    await state.update_data(fio=message.text)
+
+    fio = message.text.strip()
+
+    if len(fio) < 5 or len(fio.split()) < 2:
+        await message.answer(
+            "❌ Введите корректное Ф.И.О.\n\n"
+            "Пример:\n"
+            "Иванов Иван Иванович"
+        )
+        return
+
+    await state.update_data(fio=fio)
 
     await message.answer(
-    "📞 Шаг 2 из 4\n\nНажмите кнопку ниже для отправки номера:",
-    reply_markup=phone_keyboard
-)
+        "📞 Шаг 2 из 4\n\n"
+        "Нажмите кнопку ниже для отправки номера телефона:",
+        reply_markup=phone_keyboard
+    )
+
     await state.set_state(Form.phone)
 
 @dp.message(Form.phone)
