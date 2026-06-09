@@ -159,7 +159,16 @@ async def get_phone(message: Message, state: FSMContext):
     if message.contact:
         phone = message.contact.phone_number
     else:
-        phone = message.text
+        phone = message.text.strip()
+
+        numbers = "".join(filter(str.isdigit, phone))
+
+        if len(numbers) < 10:
+            await message.answer(
+                "❌ Неверный номер телефона.\n\n"
+                "Введите номер ещё раз или нажмите кнопку ниже."
+            )
+            return
 
     await state.update_data(phone=phone)
 
