@@ -86,7 +86,7 @@ async def stats_command(message: Message):
     if users > 0:
         conversion = round(applicants / users * 100, 1)
     else:
-    conversion = 0
+        conversion = 0
 
     await message.answer(
     f"📊 Статистика\n\n"
