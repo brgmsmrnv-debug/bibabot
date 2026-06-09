@@ -63,6 +63,18 @@ start_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+phone_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(
+                text="📞 Отправить номер",
+                request_contact=True
+            )
+        ]
+    ],
+    resize_keyboard=True
+)
+
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
         
@@ -122,17 +134,28 @@ async def stats_command(message: Message):
 async def get_fio(message: Message, state: FSMContext):
     await state.update_data(fio=message.text)
 
-    await message.answer("Введите номер телефона:")
+    await message.answer(
+    "📞 Шаг 2 из 4\n\nНажмите кнопку ниже для отправки номера:",
+    reply_markup=phone_keyboard
+)
     await state.set_state(Form.phone)
-
 
 @dp.message(Form.phone)
 async def get_phone(message: Message, state: FSMContext):
-    await state.update_data(phone=message.text)
 
-    await message.answer("Введите e-mail:")
+    if message.contact:
+        phone = message.contact.phone_number
+    else:
+        phone = message.text
+
+    await state.update_data(phone=phone)
+
+    await message.answer(
+        "📧 Шаг 3 из 4\n\nВведите e-mail:",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
     await state.set_state(Form.email)
-
 
 @dp.message(Form.email)
 async def get_email(message: Message, state: FSMContext):
