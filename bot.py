@@ -209,12 +209,12 @@ async def get_comment(message: Message, state: FSMContext):
     data = await state.get_data()
 
     text = (
-        "Проверьте данные:\n\n"
-        f"👤 Ф.И.О.: {data['fio']}\n"
-        f"📞 Телефон: {data['phone']}\n"
-        f"📧 E-mail: {data['email']}\n"
-        f"💬 Комментарий: {data['comment']}\n\n"
-        "Подтвердить заявку?"
+        "📋 Проверьте данные\n\n"
+        f"👤 {data['fio']}\n"
+        f"📞 {data['phone']}\n"
+        f"📧 {data['email']}\n"
+        f"💬 {data['comment']}\n\n"
+        "Все верно?"
     )
 
     await message.answer(
