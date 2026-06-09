@@ -1,0 +1,149 @@
+import asyncio
+from aiogram import Bot, Dispatcher, F
+from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import (
+    Message,
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+)
+
+TOKEN = "ВАШ_НОВЫЙ_ТОКЕН"
+ADMIN_ID = 6287069134
+
+
+class Form(StatesGroup):
+    fio = State()
+    phone = State()
+    email = State()
+    comment = State()
+    confirm = State()
+
+
+dp = Dispatcher(storage=MemoryStorage())
+
+
+confirm_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="✅ Подтвердить")],
+        [KeyboardButton(text="❌ Заполнить заново")]
+    ],
+    resize_keyboard=True
+)
+
+
+@dp.message(CommandStart())
+async def start(message: Message, state: FSMContext):
+    await state.clear()
+
+    await message.answer(
+        "Здравствуйте! Пожалуйста, заполните заявку.\n\n"
+        "Введите ваше Ф.И.О."
+    )
+
+    await state.set_state(Form.fio)
+
+
+@dp.message(Form.fio)
+async def get_fio(message: Message, state: FSMContext):
+    await state.update_data(fio=message.text)
+
+    await message.answer("Введите номер телефона:")
+    await state.set_state(Form.phone)
+
+
+@dp.message(Form.phone)
+async def get_phone(message: Message, state: FSMContext):
+    await state.update_data(phone=message.text)
+
+    await message.answer("Введите e-mail:")
+    await state.set_state(Form.email)
+
+
+@dp.message(Form.email)
+async def get_email(message: Message, state: FSMContext):
+    await state.update_data(email=message.text)
+
+    await message.answer("Оставьте комментарий:")
+    await state.set_state(Form.comment)
+
+
+@dp.message(Form.comment)
+async def get_comment(message: Message, state: FSMContext):
+    await state.update_data(comment=message.text)
+
+    data = await state.get_data()
+
+    text = (
+        "Проверьте данные:\n\n"
+        f"👤 Ф.И.О.: {data['fio']}\n"
+        f"📞 Телефон: {data['phone']}\n"
+        f"📧 E-mail: {data['email']}\n"
+        f"💬 Комментарий: {data['comment']}\n\n"
+        "Подтвердить заявку?"
+    )
+
+    await message.answer(
+        text,
+        reply_markup=confirm_keyboard
+    )
+
+    await state.set_state(Form.confirm)
+
+
+@dp.message(Form.confirm, F.text == "❌ Заполнить заново")
+async def restart_form(message: Message, state: FSMContext):
+    await state.clear()
+
+    await message.answer(
+        "Введите ваше Ф.И.О.",
+        reply_markup=None
+    )
+
+    await state.set_state(Form.fio)
+
+
+@dp.message(Form.confirm, F.text == "✅ Подтвердить")
+async def confirm_form(message: Message, state: FSMContext, bot: Bot):
+    data = await state.get_data()
+
+    username = (
+        f"@{message.from_user.username}"
+        if message.from_user.username
+        else "не указан"
+    )
+
+    application = (
+        "📥 Новая заявка\n\n"
+        f"👤 Ф.И.О.: {data['fio']}\n"
+        f"📞 Телефон: {data['phone']}\n"
+        f"📧 E-mail: {data['email']}\n"
+        f"💬 Комментарий: {data['comment']}\n\n"
+        f"Telegram: {username}\n"
+        f"ID: {message.from_user.id}"
+    )
+
+    await bot.send_message(
+        ADMIN_ID,
+        application
+    )
+
+    await message.answer(
+        "✅ Спасибо! Ваша заявка успешно отправлена.",
+        reply_markup=None
+    )
+
+    await state.clear()
+
+
+async def main():
+    bot = Bot(TOKEN)
+
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
