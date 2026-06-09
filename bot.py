@@ -11,7 +11,7 @@ from aiogram.types import (
     KeyboardButton,
 )
 
-TOKEN = "ВАШ_НОВЫЙ_ТОКЕН"
+TOKEN = 8979751097:AAGbY5j4nOnjV7bNW7RraYwuts_kW87M-ho
 ADMIN_ID = 6287069134
 
 
