@@ -55,13 +55,14 @@ confirm_keyboard = ReplyKeyboardMarkup(
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
         
-        stats = load_stats()
+    stats = load_stats()
 
     user_id = message.from_user.id
 
     if user_id not in stats["users"]:
         stats["users"].append(user_id)
         save_stats(stats)
+        
     await state.clear()
 
     await message.answer(
