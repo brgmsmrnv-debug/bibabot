@@ -17,6 +17,19 @@ from aiogram.types import (
 
 TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 6287069134
+def load_stats():
+    try:
+        with open("stats.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {
+            "users": [],
+            "applications": 0
+        }
+
+def save_stats(stats):
+    with open("stats.json", "w", encoding="utf-8") as f:
+        json.dump(stats, f)
 
 
 class Form(StatesGroup):
