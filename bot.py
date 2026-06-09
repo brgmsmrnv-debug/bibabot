@@ -239,7 +239,7 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
 
-    app = Flask(__name__)
+app = Flask(__name__)
 
 @app.route("/")
 def home():
