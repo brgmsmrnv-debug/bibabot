@@ -241,7 +241,7 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
 
     app = Flask(__name__)
 
-    @app.route("/")
+@app.route("/")
 def home():
     return "Bot is running"
 
