@@ -211,11 +211,11 @@ try:
     
 except Exception as e:
     print(f"Google Sheets error: {e}")
-stats = load_stats()
+        stats = load_stats()
 
-stats["applications"] += 1
+    stats["applications"] += 1
 
-user_id = message.from_user.id
+    user_id = message.from_user.id
 
     if user_id not in stats["applicants"]:
         stats["applicants"].append(user_id)
