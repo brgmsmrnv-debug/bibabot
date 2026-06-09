@@ -54,6 +54,7 @@ confirm_keyboard = ReplyKeyboardMarkup(
 
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
+        
         stats = load_stats()
 
     user_id = message.from_user.id
