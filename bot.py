@@ -189,7 +189,14 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
     )
 
     stats = load_stats()
+
     stats["applications"] += 1
+
+    user_id = message.from_user.id
+
+    if user_id not in stats["applicants"]:
+    stats["applicants"].append(user_id)
+
     save_stats(stats)
     
     await message.answer(
