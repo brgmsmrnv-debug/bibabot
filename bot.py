@@ -12,7 +12,7 @@ from aiogram.types import (
     KeyboardButton,
 )
 
-TOKEN = os.getenv("8979751097:AAGbY5j4nOnjV7bNW7RraYwuts_kW87M-ho")
+TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 6287069134
 
 
