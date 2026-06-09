@@ -76,8 +76,6 @@ async def start(message: Message, state: FSMContext):
         reply_markup=start_keyboard
 
     )
-
-    await state.set_state(Form.fio)
     
 @dp.message(F.text == "/stats")
 async def stats_command(message: Message):
