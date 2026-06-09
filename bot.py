@@ -49,13 +49,18 @@ dp = Dispatcher(storage=MemoryStorage())
 
 confirm_keyboard = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="📝 Оставить заявку")]
         [KeyboardButton(text="✅ Подтвердить")],
         [KeyboardButton(text="❌ Заполнить заново")]
     ],
     resize_keyboard=True
 )
 
+start_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="📝 Оставить заявку")]
+    ],
+    resize_keyboard=True
+)
 
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
@@ -77,6 +82,17 @@ async def start(message: Message, state: FSMContext):
 
     )
     
+@dp.message(F.text == "📝 Оставить заявку")
+async def start_application(message: Message, state: FSMContext):
+
+    await message.answer(
+        "📍 Шаг 1 из 4\n\n"
+        "Введите ваше Ф.И.О.",
+        reply_markup=None
+    )
+
+    await state.set_state(Form.fio)
+
 @dp.message(F.text == "/stats")
 async def stats_command(message: Message):
     if message.from_user.id != ADMIN_ID:
