@@ -108,6 +108,17 @@ async def restart_form(message: Message, state: FSMContext):
 
     await state.set_state(Form.fio)
 
+@dp.message(F.text == "❌ Заполнить заново")
+async def restart_anytime(message: Message, state: FSMContext):
+    await state.clear()
+
+    await message.answer(
+        "Введите ваше Ф.И.О.",
+        reply_markup=None
+    )
+
+    await state.set_state(Form.fio)
+
 
 @dp.message(Form.confirm, F.text == "✅ Подтвердить")
 async def confirm_form(message: Message, state: FSMContext, bot: Bot):
