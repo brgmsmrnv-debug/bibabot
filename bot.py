@@ -204,7 +204,17 @@ async def get_email(message: Message, state: FSMContext):
 
 @dp.message(Form.comment)
 async def get_comment(message: Message, state: FSMContext):
-    await state.update_data(comment=message.text)
+    
+    comment = message.text.strip()
+
+    if len(comment) < 5:
+        await message.answer(
+            "❌ Комментарий слишком короткий.\n\n"
+            "Опишите вопрос подробнее."
+        )
+        return
+
+    await state.update_data(comment=comment)
 
     data = await state.get_data()
 
