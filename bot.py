@@ -211,31 +211,32 @@ try:
     
 except Exception as e:
     print(f"Google Sheets error: {e}")
-        stats = load_stats()
-
-    stats["applications"] += 1
-
-    user_id = message.from_user.id
-
-    if user_id not in stats["applicants"]:
-        stats["applicants"].append(user_id)
-        
-    stats["last_applications"].append({
-        "fio": data["fio"],
-        "phone": data["phone"]
-    })
-
-    if len(stats["last_applications"]) > 5:
-        stats["last_applications"] = stats["last_applications"][-5:]
-
-    save_stats(stats)
     
-    await message.answer(
-        "✅ Спасибо! Ваша заявка успешно отправлена.",
-        reply_markup=None
-    )
+stats = load_stats()
 
-    await state.clear()
+stats["applications"] += 1
+
+user_id = message.from_user.id
+
+if user_id not in stats["applicants"]:
+    stats["applicants"].append(user_id)
+        
+stats["last_applications"].append({
+    "fio": data["fio"],
+    "phone": data["phone"]
+})
+
+if len(stats["last_applications"]) > 5:
+    stats["last_applications"] = stats["last_applications"][-5:]
+
+save_stats(stats)
+    
+await message.answer(
+    "✅ Спасибо! Ваша заявка успешно отправлена.",
+    reply_markup=None
+)
+
+await state.clear()
 
 
 app = Flask(__name__)
