@@ -24,7 +24,9 @@ def load_stats():
     except:
         return {
             "users": [],
-            "applications": 0
+            "applications": 0,
+            "applicants": [],
+            "last_applications": []
         }
 
 def save_stats(stats):
