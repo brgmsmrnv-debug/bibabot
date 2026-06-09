@@ -291,7 +291,7 @@ async def confirm_form(message: Message, state: FSMContext, bot: Bot):
             GOOGLE_SCRIPT_URL,
             json={
                 "fio": data["fio"],
-                "phone": data["phone"],
+                "phone": "'" + str(data["phone"]),
                 "email": data["email"],
                 "comment": data["comment"],
                 "telegram": username,
